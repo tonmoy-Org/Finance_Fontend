@@ -353,7 +353,7 @@ export const UserManagement = () => {
     return (
         <Box>
             <Helmet>
-                <title>User management | Sterling Septic & Plumbing LLC</title>
+                <title>User management | Finance Dashboard</title>
                 <meta name="description" content="Super administrator user management dashboard" />
             </Helmet>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
@@ -362,7 +362,7 @@ export const UserManagement = () => {
                         fontWeight: 'bold',
                         mb: 0.5,
                         fontSize: 20,
-                        background: `linear-gradient(135deg, ${BLUE_DARK} 0%, ${BLUE_COLOR} 100%)`,
+                        background: `#0F1115`,
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
@@ -645,13 +645,11 @@ export const UserManagement = () => {
                 }}
             >
                 <DialogTitle sx={{
-                    pb: 2,
-                    background: `linear-gradient(135deg, ${BLUE_COLOR} 0%, ${BLUE_DARK} 100%)`,
-                    color: 'white',
+                    color: '#0F1115',
                 }}>
                     {selectedUser ? 'Edit User' : 'Add New User'}
                 </DialogTitle>
-                <DialogContent sx={{ pt: 3, mt: 4 }}>
+                <DialogContent>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
                         <StyledTextField
                             fullWidth
@@ -661,6 +659,7 @@ export const UserManagement = () => {
                             onChange={handleInputChange}
                             required
                             size="small"
+                            sx={{ mt: 2 }}
                         />
                         <StyledTextField
                             fullWidth
@@ -701,8 +700,8 @@ export const UserManagement = () => {
                                     },
                                 }}
                             >
-                                <MenuItem value="manager">Manager</MenuItem>
-                                <MenuItem value="tech">Tech</MenuItem>
+                                <MenuItem value="member">Member</MenuItem>
+                                <MenuItem value="client">Client</MenuItem>
                             </Select>
                         </FormControl>
                         {selectedUser && (

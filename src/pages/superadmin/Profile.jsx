@@ -7,10 +7,10 @@ export const SuperAdminProfile = () => {
     return (
         <Box>
             <Helmet>
-                <title>Super Admin Profile | Sterling Septic & Plumbing LLC</title>
+                <title>Super Admin Profile | Finance Dashboard</title>
                 <meta name="description" content="Super administrator profile management dashboard" />
             </Helmet>
-            <ProfilePage roleLabel="SUPER ADMIN" />
+            <ProfilePage roleLabel="Super Admin" />
         </Box>
     )
 };

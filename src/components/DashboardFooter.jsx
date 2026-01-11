@@ -23,7 +23,7 @@ export default function DashboardFooter() {
             fontSize: '0.875rem',
           }}
         >
-          © {currentYear} Sterling Septic & Plumbing LLC. All rights reserved.
+          © {currentYear} Finance Dashboard. All rights reserved.
         </Typography>
       </Container>
     </Box>

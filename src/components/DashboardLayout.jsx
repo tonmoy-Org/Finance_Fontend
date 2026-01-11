@@ -16,14 +16,18 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { useAuth } from '../auth/AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../public/logo.png';
-import { ExpandLess, ExpandMore, Menu as MenuIcon } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, Menu as MenuIcon, MoreVert, } from '@mui/icons-material';
 import DashboardFooter from './DashboardFooter';
 
 const drawerWidth = 250;
@@ -37,8 +41,8 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-  backgroundColor: '#1a365d',
-  backgroundImage: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
+  backgroundColor: '#f8fafc', // Light gray background
+  borderRight: '1px solid rgba(0,0,0,0.08)',
   '&::-webkit-scrollbar': {
     display: 'none',
   },
@@ -53,8 +57,8 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  backgroundColor: '#1a365d',
-  backgroundImage: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
+  backgroundColor: '#f8fafc', // Light gray background
+  borderRight: '1px solid rgba(0,0,0,0.08)',
   '&::-webkit-scrollbar': {
     display: 'none',
   },
@@ -74,7 +78,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
-  backgroundColor: '#ffffff',
   boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
   borderBottom: '1px solid rgba(0,0,0,0.06)',
   transition: theme.transitions.create(['width', 'margin'], {
@@ -136,12 +139,30 @@ export default function DashboardLayout({ children, title, menuItems }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(!isMobile);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
+
+  const openMenu = Boolean(anchorEl);
+  const openDrawerMenu = Boolean(drawerAnchorEl);
 
   React.useEffect(() => {
     setOpen(!isMobile);
   }, [isMobile]);
 
   const handleDrawerToggle = () => setOpen(!open);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleDrawerMenuClick = (event) => {
+    setDrawerAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setDrawerAnchorEl(null);
+  };
 
   const getInitials = (name) =>
     name?.split(' ').map((n) => n[0]).join('').toUpperCase() || 'U';
@@ -154,7 +175,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
     if (currentPath === path) return true;
 
     // For nested routes
-    if (path !== '/superadmin-dashboard' && path !== '/manager-dashboard' && path !== '/tech-dashboard' && currentPath.startsWith(path + '/')) {
+    if (path !== '/superadmin-dashboard' && path !== '/member-dashboard' && path !== '/client-dashboard' && currentPath.startsWith(path + '/')) {
       return true;
     }
 
@@ -164,7 +185,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
     }
 
     // For paths that are direct parent of current path
-    if (path !== '/superadmin-dashboard' && path !== '/member-dashboard' && path !== '/tech-dashboard' && currentPath === path) {
+    if (path !== '/superadmin-dashboard' && path !== '/member-dashboard' && path !== '/client-dashboard' && currentPath === path) {
       return true;
     }
 
@@ -176,15 +197,15 @@ export default function DashboardLayout({ children, title, menuItems }) {
 
     if (isActive) {
       return {
-        color: '#ffffff !important',
-        backgroundColor: alpha('#ffffff', 0.15),
-        borderLeft: '3px solid #63b3ed',
+        color: '#3964FE',
+        backgroundColor: '#E4EDFD',
+        borderLeft: '3px solid #3964FE',
         '& .MuiListItemIcon-root': {
           color: '#ffffff',
         },
         '&:hover': {
-          backgroundColor: alpha('#ffffff', 0.2),
-          color: '#ffffff !important',
+          backgroundColor: '#E4EDFD',
+          color: '#3964FE',
         },
         borderRadius: '0 6px 6px 0',
         transition: 'all 0.15s ease',
@@ -194,16 +215,16 @@ export default function DashboardLayout({ children, title, menuItems }) {
     }
 
     return {
-      color: alpha('#ffffff', 0.85),
+      color: '#4a5568',
       backgroundColor: 'transparent',
       '& .MuiListItemIcon-root': {
-        color: alpha('#ffffff', 0.85),
+        color: '#718096',
       },
       '&:hover': {
-        backgroundColor: alpha('#ffffff', 0.1),
-        color: '#ffffff',
+        backgroundColor: '#e2e8f0',
+        color: '#2d3748',
         '& .MuiListItemIcon-root': {
-          color: '#ffffff',
+          color: '#4a5568',
         },
       },
       borderRadius: '0 6px 6px 0',
@@ -214,8 +235,19 @@ export default function DashboardLayout({ children, title, menuItems }) {
   };
 
   const handleLogout = () => {
+    handleMenuClose();
     logout();
     navigate('/login');
+  };
+
+  const handleProfile = () => {
+    handleMenuClose();
+    navigate('/profile');
+  };
+
+  const handleSettings = () => {
+    handleMenuClose();
+    navigate('/settings');
   };
 
   const handleNavigation = (path) => {
@@ -230,7 +262,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      color: '#ffffff',
+      color: '#2d3748',
       '& .MuiListItemIcon-root': {
         color: 'inherit',
       },
@@ -238,7 +270,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
         color: 'inherit',
       },
       '& .MuiDivider-root': {
-        borderColor: alpha('#ffffff', 0.15),
+        borderColor: 'rgba(0,0,0,0.08)',
       },
     }}>
       <DrawerHeader>
@@ -272,7 +304,6 @@ export default function DashboardLayout({ children, title, menuItems }) {
                 style={{
                   width: '32px',
                   height: 'auto',
-                  filter: 'brightness(0) invert(1)'
                 }}
               />
             </Box>
@@ -280,12 +311,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
         </Box>
       </DrawerHeader>
 
-      <Divider sx={{
-        borderColor: alpha('#ffffff', 0.15),
-        my: 0.5,
-      }} />
-
-      <ScrollableBox sx={{ py: 0.5 }}>
+      <ScrollableBox sx={{ py: 0.5, my: 0.5, }}>
         {menuItems?.map((section, sectionIndex) => (
           <React.Fragment key={sectionIndex}>
             {/* Section Header - Only show when drawer is open */}
@@ -298,7 +324,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                 <Typography
                   variant="caption"
                   sx={{
-                    color: alpha('#ffffff', 0.6),
+                    color: '#718096',
                     fontSize: '0.7rem',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -348,7 +374,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                       {React.cloneElement(item.icon, {
                         sx: {
                           fontSize: 20,
-                          color: 'inherit',
+                          color: '#3964FE',
                         }
                       })}
                     </ListItemIcon>
@@ -359,7 +385,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                             fontSize: '0.85rem',
                             fontWeight: 500,
                             lineHeight: 1.2,
-                            color: 'inherit',
+                            color: '#0F1115',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -411,6 +437,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                           fontSize: '0.8rem',
                           padding: '4px 8px',
                           borderRadius: '4px',
+                          color: '#ffffff'
                         }
                       },
                       arrow: {
@@ -440,7 +467,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                       <List sx={{
                         py: 0,
                         pl: 3.5,
-                        backgroundColor: alpha('#000000', 0.1)
+                        backgroundColor: '#edf2f7'
                       }}>
                         {item.subItems.map((subItem) => (
                           <ListItem
@@ -460,7 +487,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
                                   py: 0.5,
                                   ml: 1,
                                   '&:hover': {
-                                    backgroundColor: alpha('#ffffff', 0.1),
+                                    backgroundColor: '#e2e8f0',
                                   },
                                   '& .MuiTypography-root': {
                                     fontSize: '0.8rem',
@@ -506,71 +533,221 @@ export default function DashboardLayout({ children, title, menuItems }) {
         ))}
       </ScrollableBox>
 
-      {/* Logout button at bottom */}
+      {/* User info and logout button at bottom */}
       <Box sx={{
         p: 1.5,
-        borderTop: `1px solid ${alpha('#ffffff', 0.15)}`,
-        flexShrink: 0
+        flexShrink: 0,
       }}>
-        <ListItemButton
-          onClick={handleLogout}
-          sx={{
-            color: alpha('#ffffff', 0.85),
-            backgroundColor: 'transparent',
-            borderRadius: '6px',
-            '&:hover': {
-              backgroundColor: alpha('#ffffff', 0.1),
-              color: '#ffffff',
-            },
-            flexDirection: open ? 'row' : 'column',
-            justifyContent: open ? 'flex-start' : 'center',
-            alignItems: 'center',
-            gap: open ? 1.5 : 0.25,
-            px: open ? 2 : 1.5,
-            py: 0.75,
-            minHeight: 44,
-          }}
-        >
-          <ListItemIcon sx={{
-            minWidth: 0,
-            mr: open ? 1.5 : 0,
-            justifyContent: 'center',
-            color: 'inherit',
-          }}>
-            <LogoutIcon sx={{ fontSize: 20 }} />
-          </ListItemIcon>
-          {open && (
-            <ListItemText
-              primary="Logout"
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '0.85rem',
-                  fontWeight: 500,
-                  color: 'inherit',
-                  letterSpacing: '0.01em',
-                }
-              }}
-            />
-          )}
-          {!open && (
-            <Typography sx={{
-              fontSize: '0.6rem',
-              fontWeight: 500,
-              mt: 0.25,
-              textAlign: 'center',
-              color: 'inherit',
-              letterSpacing: '0.01em',
+        {open ? (
+          // Expanded view with user info and menu
+          <Box>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              px: 0.5,
+              mb: 0.5,
             }}>
-              Out
-            </Typography>
-          )}
-        </ListItemButton>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Avatar
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    bgcolor: '#3182ce',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  {getInitials(user?.name)}
+                </Avatar>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography
+                    sx={{
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      color: '#2d3748',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {user?.name || 'User'}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '0.7rem',
+                      color: '#718096',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {user?.email || user?.role || 'User'}
+                  </Typography>
+                </Box>
+              </Box>
+              <IconButton
+                size="small"
+                onClick={handleDrawerMenuClick}
+                sx={{
+                  color: '#718096',
+                  '&:hover': {
+                    backgroundColor: '#e2e8f0',
+                    color: '#4a5568',
+                  },
+                }}
+              >
+                <MoreVert fontSize="small" />
+              </IconButton>
+            </Box>
+            <Menu
+              anchorEl={drawerAnchorEl}
+              open={openDrawerMenu}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              PaperProps={{
+                sx: {
+                  mt: 1,
+                  ml: -1,
+                  minWidth: 180,
+                  backgroundColor: '#ffffff',
+                  color: '#2d3748',
+                  border: '1px solid rgba(0,0,0,0.08)',
+                  '& .MuiMenuItem-root': {
+                    fontSize: '0.85rem',
+                    py: 0.75,
+                    '&:hover': {
+                      backgroundColor: '#f7fafc',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      fontSize: 18,
+                      color: '#718096',
+                      mr: 1.5,
+                    },
+                  },
+                },
+              }}
+            >
+              <MenuItem onClick={handleProfile}>
+                <PersonIcon />
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleSettings}>
+                <SettingsIcon />
+                Settings
+              </MenuItem>
+              <Divider sx={{ borderColor: 'rgba(0,0,0,0.08)', my: 0.5 }} />
+              <MenuItem onClick={handleLogout} sx={{ color: '#e53e3e' }}>
+                <LogoutIcon />
+                Logout
+              </MenuItem>
+            </Menu>
+          </Box>
+        ) : (
+          // Collapsed view - only avatar with menu
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <IconButton
+              onClick={handleDrawerMenuClick}
+              sx={{
+                width: 44,
+                height: 44,
+                p: 0,
+                '&:hover': {
+                  backgroundColor: '#e2e8f0',
+                },
+              }}
+            >
+              <Avatar
+                sx={{
+                  width: 36,
+                  height: 36,
+                  bgcolor: '#3182ce',
+                  color: '#ffffff',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                }}
+              >
+                {getInitials(user?.name)}
+              </Avatar>
+            </IconButton>
+            <Menu
+              anchorEl={drawerAnchorEl}
+              open={openDrawerMenu}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              PaperProps={{
+                sx: {
+                  mt: 0,
+                  ml: 1,
+                  minWidth: 180,
+                  backgroundColor: '#ffffff',
+                  color: '#2d3748',
+                  border: '1px solid rgba(0,0,0,0.08)',
+                  '& .MuiMenuItem-root': {
+                    fontSize: '0.85rem',
+                    py: 0.75,
+                    '&:hover': {
+                      backgroundColor: '#f7fafc',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      fontSize: 18,
+                      color: '#718096',
+                      mr: 1.5,
+                    },
+                  },
+                },
+              }}
+            >
+              <Box sx={{ px: 2, py: 1.5, borderBottom: `1px solid rgba(0,0,0,0.08)` }}>
+                <Typography sx={{ fontSize: '0.85rem', fontWeight: 600, color: '#2d3748' }}>
+                  {user?.name || 'User'}
+                </Typography>
+                <Typography sx={{ fontSize: '0.75rem', color: '#718096' }}>
+                  {user?.email || user?.role || 'User'}
+                </Typography>
+              </Box>
+              <MenuItem onClick={handleProfile}>
+                <PersonIcon />
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleSettings}>
+                <SettingsIcon />
+                Settings
+              </MenuItem>
+              <Divider sx={{ borderColor: 'rgba(0,0,0,0.08)', my: 0.5 }} />
+              <MenuItem onClick={handleLogout} sx={{ color: '#e53e3e' }}>
+                <LogoutIcon />
+                Logout
+              </MenuItem>
+            </Menu>
+          </Box>
+        )}
       </Box>
     </Box>
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
+    <Box sx={{
+      display: 'flex',
+      minHeight: '100vh',
+      overflow: 'hidden',
+      backgroundColor: '#f8fafc', // Light gray background
+    }}>
       <CssBaseline />
 
       {/* AppBar */}
@@ -632,13 +809,13 @@ export default function DashboardLayout({ children, title, menuItems }) {
               noWrap
               sx={{
                 fontWeight: 600,
-                color: '#2d3748',
+                color: '#0F1115',
                 fontSize: { xs: '0.95rem', sm: '1.05rem' },
                 lineHeight: 1.2,
                 letterSpacing: '-0.01em',
               }}
             >
-              Sterling Septic & Plumbing
+              Finance Dashboard
             </Typography>
             <Typography
               variant="body2"
@@ -669,11 +846,13 @@ export default function DashboardLayout({ children, title, menuItems }) {
               }
               label={user?.name}
               variant="outlined"
+              onClick={handleMenuClick}
               sx={{
                 borderColor: alpha('#3182ce', 0.2),
                 backgroundColor: alpha('#3182ce', 0.04),
                 color: '#2d3748',
                 height: 36,
+                cursor: 'pointer',
                 '& .MuiChip-label': {
                   fontSize: '0.8rem',
                   fontWeight: 500,
@@ -688,9 +867,10 @@ export default function DashboardLayout({ children, title, menuItems }) {
               }}
             />
             <IconButton
-              onClick={handleLogout}
-              title="Logout"
+              size="small"
+              onClick={handleMenuClick}
               sx={{
+                display: { xs: 'flex', sm: 'none' },
                 color: '#718096',
                 '&:hover': {
                   backgroundColor: alpha('#3182ce', 0.08),
@@ -700,9 +880,64 @@ export default function DashboardLayout({ children, title, menuItems }) {
                 height: 36,
               }}
             >
-              <LogoutIcon sx={{ fontSize: 20 }} />
+              <Avatar
+                sx={{
+                  width: 28,
+                  height: 28,
+                  fontSize: '0.7rem',
+                  bgcolor: '#3182ce',
+                  color: '#ffffff',
+                  fontWeight: 600,
+                }}
+              >
+                {getInitials(user?.name)}
+              </Avatar>
             </IconButton>
           </Box>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={openMenu}
+            onClose={handleMenuClose}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                minWidth: 200,
+                boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                border: '1px solid rgba(0,0,0,0.06)',
+              },
+            }}
+          >
+            <MenuItem sx={{ py: 1.5, px: 2, borderBottom: '1px solid rgba(0,0,0,0.06)' }} disabled>
+              <Box>
+                <Typography variant="body2" sx={{ fontWeight: 600, color: '#2d3748' }}>
+                  {user?.name}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#718096' }}>
+                  {user?.email}
+                </Typography>
+              </Box>
+            </MenuItem>
+            <MenuItem onClick={handleProfile} sx={{ py: 1 }}>
+              <ListItemIcon>
+                <PersonIcon fontSize="small" />
+              </ListItemIcon>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={handleSettings} sx={{ py: 1 }}>
+              <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout} sx={{ py: 1, color: '#e53e3e' }}>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" sx={{ color: '#e53e3e' }} />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
@@ -719,8 +954,8 @@ export default function DashboardLayout({ children, title, menuItems }) {
           sx={{
             '& .MuiDrawer-paper': {
               width: mobileDrawerWidth,
-              backgroundImage: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
-              borderRight: 'none',
+              backgroundColor: '#f8fafc', // Light gray background for mobile
+              borderRight: '1px solid rgba(0,0,0,0.08)',
               '&::-webkit-scrollbar': {
                 display: 'none',
               },
@@ -745,7 +980,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
-          backgroundColor: '#f7fafc',
+          backgroundColor: '#f8fafc',
           width: '100%',
           overflow: 'hidden',
         }}
@@ -757,8 +992,8 @@ export default function DashboardLayout({ children, title, menuItems }) {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            p: { xs: 1.5, sm: 2 },
-            pt: { xs: 1.5, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            px: { xs: 1, sm: 1.5 },
             overflow: 'hidden',
           }}
         >
@@ -768,7 +1003,7 @@ export default function DashboardLayout({ children, title, menuItems }) {
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#ffffff',
-              borderRadius: 1,
+              borderRadius: 2,
               boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
               border: '1px solid rgba(0,0,0,0.04)',
               overflow: 'hidden',
@@ -810,8 +1045,8 @@ export default function DashboardLayout({ children, title, menuItems }) {
         <Box sx={{
           borderTop: '1px solid rgba(0,0,0,0.04)',
           backgroundColor: '#ffffff',
-          py: 1.5,
-          px: { xs: 1.5, sm: 2 },
+          pt: 1.5,
+          px: { xs: 1.5, sm: 1 },
         }}>
           <DashboardFooter />
         </Box>

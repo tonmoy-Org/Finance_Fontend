@@ -1,9 +1,10 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import DashboardLayout from '../../../components/DashboardLayout';
-import { TechMenuComponent } from './TechMenuComponent';
+import { ClientMenuComponent } from './ClientMenuComponent';
 
-export const TechLayout = () => {
+
+export const ClientLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,7 +13,7 @@ export const TechLayout = () => {
   };
 
   // Get menu items from the component with section structure
-  const structuredMenuItems = TechMenuComponent({ onMenuItemClick: handleMenuItemClick });
+  const structuredMenuItems = ClientMenuComponent({ onMenuItemClick: handleMenuItemClick });
 
   // Function to determine the current page title based on route
   const getPageTitle = () => {
@@ -34,11 +35,11 @@ export const TechLayout = () => {
     }
 
     // Fallback titles for common routes
-    if (currentPath === '/tech-dashboard') {
+    if (currentPath === '/client-dashboard') {
       return 'Dashboard';
     }
 
-    return 'Technician Dashboard';
+    return 'Clint Dashboard';
   };
 
   return (

@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Login } from '../pages/login/Login';
 import { useAuth } from '../auth/AuthProvider';
 import { PrivateRoute } from '../auth/PrivateRoute';
+import { ErrorPage } from '../pages/error/ErrorPage';
 
 import { SuperAdminLayout } from '../pages/superadmin/components/SuperAdminLayout';
 import { MemberLayout } from '../pages/member/components/MemberLayout';
-
-import { TechLayout } from '../pages/tech/components/TechLayout';
+import { ClientLayout } from '../pages/client/components/ClientLayout';
 
 import { SuperAdminDashboard } from '../pages/superadmin/SuperAdminDashboard';
 import { SuperAdminProfile } from '../pages/superadmin/Profile';
@@ -16,14 +16,15 @@ import { UserManagement } from '../pages/superadmin/UserManagement';
 
 import { MemberDashboard } from '../pages/member/MemberDashboard';
 import { MemberProfile } from '../pages/member/Profile';
-
-import { TechDashboard } from '../pages/tech/TechDashboard';
-import { TechProfile } from '../pages/tech/Profile';
-
-import { ErrorPage } from '../pages/error/ErrorPage';
 import RMEReports from '../pages/member/HMIS/RMEReports';
 import RSSReports from '../pages/member/HMIS/RSSReports';
 import TOSReports from '../pages/member/HMIS/TOSReports';
+
+
+import { ClientDashboard } from '../pages/client/ClientDashboard';
+import { ClientProfile } from '../pages/client/Profile';
+
+
 
 
 
@@ -48,8 +49,8 @@ export const AppRoutes = () => {
           element={
             <PrivateRoute>
               {user?.role === 'superadmin' && <Navigate to="/superadmin-dashboard" replace />}
-              {user?.role === 'manager' && <Navigate to="/member-dashboard" replace />}
-              {user?.role === 'tech' && <Navigate to="/tech-dashboard" replace />}
+              {user?.role === 'member' && <Navigate to="/member-dashboard" replace />}
+              {user?.role === 'client' && <Navigate to="/client-dashboard" replace />}
             </PrivateRoute>
           }
         />
@@ -88,15 +89,15 @@ export const AppRoutes = () => {
 
         {/* Tech Routes */}
         <Route
-          path="/tech-dashboard"
+          path="/client-dashboard"
           element={
-            <PrivateRoute requiredRoles={['tech']}>
-              <TechLayout />
+            <PrivateRoute requiredRoles={['client']}>
+              <ClientLayout />
             </PrivateRoute>
           }
         >
-          <Route index element={<TechDashboard />} />
-          <Route path="profile" element={<TechProfile />} />
+          <Route index element={<ClientDashboard />} />
+          <Route path="profile" element={<ClientProfile />} />
         </Route>
 
         {/* Fallback Routes */}

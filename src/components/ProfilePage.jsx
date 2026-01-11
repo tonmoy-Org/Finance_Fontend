@@ -38,8 +38,8 @@ import DeviceList from './DeviceList';
 
 // Define color constants
 const BLUE_LIGHT = '#A8C9E9';
-const BLUE_COLOR = '#1976d2';
-const BLUE_DARK = '#1565c0';
+const BLUE_COLOR = '#0F1115';
+const BLUE_DARK = '#0F1115';
 const RED_COLOR = '#ef4444';
 const RED_LIGHT = '#fca5a5';
 const RED_DARK = '#dc2626';
@@ -272,8 +272,8 @@ export const ProfilePage = ({ roleLabel }) => {
     if (isError) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-                <Alert severity="error" sx={{ 
-                    width: '100%', 
+                <Alert severity="error" sx={{
+                    width: '100%',
                     maxWidth: 500,
                     borderRadius: 2,
                     backgroundColor: alpha(RED_COLOR, 0.05),
@@ -293,8 +293,8 @@ export const ProfilePage = ({ roleLabel }) => {
     if (!profile && !isLoading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-                <Alert severity="warning" sx={{ 
-                    width: '100%', 
+                <Alert severity="warning" sx={{
+                    width: '100%',
                     maxWidth: 500,
                     borderRadius: 2,
                     backgroundColor: alpha('#f59e0b', 0.05),
@@ -334,9 +334,9 @@ export const ProfilePage = ({ roleLabel }) => {
 
             <Box sx={{ display: { xs: '', lg: 'flex' } }} justifyContent="space-between" alignItems="center" mb={1}>
                 <Box mb={isMobile ? 2 : 0}>
-                    <Typography sx={{ 
-                        fontWeight: 'bold', 
-                        mb: 0.5, 
+                    <Typography sx={{
+                        fontWeight: 'bold',
+                        mb: 0.5,
                         fontSize: 20,
                         background: `linear-gradient(135deg, ${BLUE_DARK} 0%, ${BLUE_COLOR} 100%)`,
                         WebkitBackgroundClip: 'text',
@@ -461,7 +461,7 @@ export const ProfilePage = ({ roleLabel }) => {
                             </Grid>
                         </Grid>
 
-                        <Divider sx={{ 
+                        <Divider sx={{
                             my: 3,
                             backgroundColor: alpha(BLUE_COLOR, 0.2),
                         }} />
@@ -497,7 +497,6 @@ export const ProfilePage = ({ roleLabel }) => {
                                     fontSize: 48,
                                     fontWeight: 'bold',
                                     mb: 3,
-                                    background: `linear-gradient(135deg, ${BLUE_LIGHT} 0%, ${BLUE_COLOR} 100%)`,
                                 }}
                             >
                                 {(formData.name?.charAt(0) || profile?.name?.charAt(0) || user?.name?.charAt(0) || 'U')?.toUpperCase()}
@@ -519,31 +518,28 @@ export const ProfilePage = ({ roleLabel }) => {
                                     fontWeight: 'bold',
                                     px: 2,
                                     py: 1,
-                                    background: `linear-gradient(135deg, ${BLUE_DARK} 0%, ${BLUE_COLOR} 100%)`,
-                                    color: '#FFFFFF',
+                                    color: '#0F1115',
                                     '& .MuiChip-icon': {
-                                        color: '#FFFFFF',
+                                        color: '#0F1115',
                                     },
                                 }}
                             />
                         </Box>
 
-                        <Divider sx={{ 
+                        <Divider sx={{
                             my: 4,
                             backgroundColor: alpha(BLUE_COLOR, 0.2),
                         }} />
 
                         <Box display="flex" flexDirection="column" gap={2}>
-                            <GradientButton
+                            <OutlineButton
                                 fullWidth
-                                variant="contained"
-                                startIcon={<SecurityIcon />}
                                 onClick={() => setOpenPasswordDialog(true)}
                                 disabled={updating || changePasswordMutation.isPending}
                                 size="large"
                             >
                                 Change Password
-                            </GradientButton>
+                            </OutlineButton>
                         </Box>
                     </Paper>
                 </Grid>
@@ -560,21 +556,15 @@ export const ProfilePage = ({ roleLabel }) => {
                     }
                 }}
             >
-                <DialogTitle sx={{ 
-                    pb: 2,
-                    background: `linear-gradient(135deg, ${BLUE_COLOR} 0%, ${BLUE_DARK} 100%)`,
-                    color: 'white',
+                <DialogTitle sx={{
+                    color: '#0F1115',
                 }}>
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <SecurityIcon />
                         Change Password
-                    </Box>
                 </DialogTitle>
                 <DialogContent>
-                    <Box sx={{ pt: 2 }}>
+                    <Box>
                         {passwordError && (
-                            <Alert severity="error" sx={{ 
-                                mb: 2,
+                            <Alert severity="error" sx={{
                                 borderRadius: 2,
                                 backgroundColor: alpha(RED_COLOR, 0.05),
                                 borderLeft: `4px solid ${RED_COLOR}`,
@@ -595,7 +585,6 @@ export const ProfilePage = ({ roleLabel }) => {
                             size='small'
                             disabled={changePasswordMutation.isPending}
                             variant="outlined"
-                            sx={{ mb: 2 }}
                         />
 
                         <StyledTextField
@@ -611,7 +600,6 @@ export const ProfilePage = ({ roleLabel }) => {
                             helperText="Password must be at least 6 characters"
                             disabled={changePasswordMutation.isPending}
                             variant="outlined"
-                            sx={{ mb: 2 }}
                         />
 
                         <StyledTextField
@@ -656,7 +644,7 @@ export const ProfilePage = ({ roleLabel }) => {
                 <Alert
                     onClose={handleCloseSnackbar}
                     severity="success"
-                    sx={{ 
+                    sx={{
                         width: '100%',
                         borderRadius: 2,
                         backgroundColor: alpha(GREEN_COLOR, 0.05),
@@ -680,7 +668,7 @@ export const ProfilePage = ({ roleLabel }) => {
                 <Alert
                     onClose={handleCloseSnackbar}
                     severity="error"
-                    sx={{ 
+                    sx={{
                         width: '100%',
                         borderRadius: 2,
                         backgroundColor: alpha(RED_COLOR, 0.05),

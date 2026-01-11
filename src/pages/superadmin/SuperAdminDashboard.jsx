@@ -7,11 +7,11 @@ export const SuperAdminDashboard = () => {
   return (
     <Box>
       <Helmet>
-        <title>Dashboard | Sterling Septic & Plumbing LLC</title>
+        <title>Dashboard | Finance Dashboard</title>
         <meta name="description" content="Technical dashboard" />
       </Helmet>
       <Typography gutterBottom  sx={{ mb: 4, fontSize: 14 }}>
-        Welcome to Sterling Septic & Plumbing LLC. This is a web application that allows you to look up customer information.
+        Welcome to Finance Dashboard. This is a web application that allows you to look up customer information.
       </Typography>
     </Box>
   );

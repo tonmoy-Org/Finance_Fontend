@@ -43,7 +43,7 @@ export const MemberLayout = () => {
 
         return 'নিয়মিত দাতা সদস্য (Regular Donor/Member) Dashboard';
     };
-
+    
     return (
         <DashboardLayout
             title={getPageTitle()}
